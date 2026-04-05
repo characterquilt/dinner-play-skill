@@ -107,6 +107,31 @@ People say yes because:
 
 The CIO or VP of Marketing isn't interested in your demo (yet), but will happily enjoy a restaurant she can't find the time to get to.
 
+## Skill structure
+
+This skill follows the [Claude Code skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices):
+
+```
+dinner-play/
+├── SKILL.md                  # Main instructions (~200 lines, loaded when triggered)
+├── primitives-reference.md   # API patterns for all 7 services (loaded as needed)
+├── tal-building.md           # TAL discovery approaches A/B/C + validation (loaded as needed)
+└── starter-script.md         # Complete Python pipeline script (loaded as needed)
+```
+
+**Design decisions:**
+- **SKILL.md under 500 lines** — keeps context budget low. Claude reads reference files only when needed.
+- **Third-person description** — required for skill discovery ("Runs end-to-end..." not "I run...")
+- **Progress checklist** — Claude copies it and checks off steps as it goes.
+- **Self-contained code snippets** — every API pattern is inline, no external script dependencies.
+- **Conditional workflow** — tests Approach A first, recommends C only if noisy. Avoids offering too many options upfront.
+
+**Customizing for your company:**
+1. Change the `name` field to match your company (lowercase, hyphens only)
+2. Adjust `person_titles` and `person_seniorities` defaults for your ICP
+3. Modify restaurant criteria (price range, vibe) if your dinners are different
+4. Add your own scoring logic in the starter script
+
 ## Built by
 
 [CharacterQuilt](https://characterquilt.com) — YC P26. We build campaign infrastructure for B2B marketing teams.
