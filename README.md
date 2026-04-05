@@ -37,7 +37,11 @@ mkdir -p ~/.claude/skills/dinner-play/
 cp SKILL.md ~/.claude/skills/dinner-play/SKILL.md
 ```
 
-### 2. Add your API keys
+### 2. Customize for your company
+
+This skill was built by CharacterQuilt as a template. When you first run it, Claude will ask you for your company name and what you do, then update all references automatically. You can also manually search-and-replace "CharacterQuilt" and "B2B marketing" throughout the skill files.
+
+### 3. Add your API keys
 
 Open `~/.claude/skills/dinner-play/SKILL.md` and fill in the API Keys section near the top. You need:
 
@@ -50,7 +54,7 @@ Open `~/.claude/skills/dinner-play/SKILL.md` and fill in the API Keys section ne
 | **Apify** | LinkedIn profile/post scraping | Optional |
 | **Webhound** | Autonomous web research (fallback for hard queries) | Optional |
 
-### 3. Run it
+### 4. Run it
 
 In Claude Code:
 
@@ -66,7 +70,7 @@ The skill will:
 - Run the full pipeline autonomously
 - Output 3 XLSX files with everything you need
 
-### 4. What you get
+### 5. What you get
 
 | File | What's in it |
 |------|-------------|

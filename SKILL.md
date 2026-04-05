@@ -3,9 +3,11 @@ name: running-dinner-campaigns
 description: "Runs end-to-end dinner campaign pipelines for B2B GTM. Takes an idea and date, builds a target account list via web research, finds VP/C-level contacts via Apollo, fills and bounce-checks emails via Findymail, scores prospects, maps a trending restaurant in every US city, and outputs three XLSX deliverables. Use when running a dinner play, building dinner campaign target lists, finding executive dinner prospects, or planning micro-events for sales."
 ---
 
-# Dinner Play — CharacterQuilt
+# Dinner Play
 
-End-to-end pipeline: **Idea → TAL → People → Score → Restaurants → Deliverables**
+End-to-end pipeline: **Idea → TAL → People → Score → Restaurants → Emails → Deliverables**
+
+> **IMPORTANT:** This skill was built by CharacterQuilt for external consumption. If you see references to "CharacterQuilt" or "B2B Marketing" when running this skill, **stop and ask the user** to provide: (1) their company name, (2) what the company does. Then update all references in the skill and README accordingly.
 
 ## End-to-End Workflow
 
@@ -52,7 +54,10 @@ Idea + Date
     ├─► Restaurant mapping (structured output per city)
     │   └─► One restaurant per unique city (ALL cities, not just top N)
     │
-    └─► Three output files (XLSX)
+    ├─► Generate dinner invite emails (GPT structured output)
+    │   └─► 3-email sequence per person (invite, follow-up, final)
+    │
+    └─► Three output files (XLSX) + optional Smartlead push
 ```
 
 ### Restaurant mapping
@@ -177,6 +182,50 @@ APIFY_API_TOKEN_2=<your-apify-api-token-2-optional>
 ANTHROPIC_API_KEY=<your-anthropic-api-key>
 WEBHOUND_API_KEY=<your-webhound-api-key-optional>
 ```
+
+---
+
+## Email Generation
+
+After restaurants are mapped, generate a 3-email invite sequence for each person using structured output. The emails should be short (150-200 words each), warm, and specific to the person's city/restaurant/date.
+
+**Email 1 (Day 0):** Initial dinner invite
+```
+Hi {first_name},
+
+Dinner at {restaurant} on {date} @ 6pm? I'm getting a few {city}-area {persona} leaders together — 
+we'll have folks from companies like {sample_companies}.
+
+No pitch, just a chance to meet local peers and swap ideas on {theme}.
+
+Any interest?
+```
+
+**Email 2 (Day 2):** Follow-up with social proof
+```
+Hi {first_name},
+
+Following up on the {city} dinner. We've got a solid group confirmed and there's still a seat.
+
+{restaurant}, {date} at 6pm. The conversation will center on {theme}.
+
+Good food, good company, no agenda. Let me know and I'll send the calendar invite.
+```
+
+**Email 3 (Day 4):** Final short nudge
+```
+Hi {first_name},
+
+Last ping on the {city} dinner — {restaurant}, {date} at 6pm.
+
+A few {persona} leaders swapping notes over a nice meal. Would be great to have you there.
+
+Interested?
+```
+
+Use GPT structured output to personalize at scale (20 parallel workers). Add `email_1`, `email_2`, `email_3`, `subject_1`, `subject_2`, `subject_3` columns to the people XLSX.
+
+**Optional: Push to Smartlead** — If you have a Smartlead account (`SMARTLEAD_API_KEY`), the emails can be pushed as a campaign. See [starter-script.md](starter-script.md) for the Smartlead API integration pattern. The Smartlead API base URL is `https://server.smartlead.ai/api/v1` with `?api_key=` query param auth.
 
 ---
 
